@@ -48,6 +48,7 @@ const todoList = () => {
   };
 
   return {
+    // eslint-disable-next-line no-undef
     all,
     add,
     markAsComplete,
