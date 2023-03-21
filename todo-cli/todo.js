@@ -1,4 +1,7 @@
 /* eslint-disable no-undef */
+/* eslint-disable linebreak-style */
+/* eslint-disable max-len */
+/* eslint-disable linebreak-style */
 const todoList = () => {
   all = [];
   const add = (todoItem) => {
@@ -7,48 +10,26 @@ const todoList = () => {
   const markAsComplete = (index) => {
     all[index].completed = true;
   };
-
   const overdue = () => {
-    //checking the date and list overdue Items
-    return all.filter((todoitem) => {
-      return todoitem.dueDate < formattedDate(new Date());
-    });
+    return all.filter((item) => item.dueDate < today);
   };
-
   const dueToday = () => {
-    // checking the date and list items that are due date today
-    return all.filter((todoitem) => {
-      return todoitem.dueDate === formattedDate(new Date());
-    });
+    return all.filter((item) => item.dueDate == today);
   };
-
   const dueLater = () => {
-    //checking the date and list items that are due date later
-    return all.filter((todoitem) => {
-      return todoitem.dueDate > formattedDate(new Date());
-    });
+    return all.filter((item) => item.dueDate > today);
   };
-
   const toDisplayableList = (list) => {
-    // Format the To-Do list here, and return the output string
-    // as per the format given above.
     return list
-      .map((todoitem) => {
-        const iscompleted = todoitem.completed ? "[x]" : "[ ]";
-
-        let date;
-        if (todoitem.dueDate === formattedDate(new Date())) {
-          date = "";
-        } else {
-          date = todoitem.dueDate;
-        }
-        return `${iscompleted} ${todoitem.title.trim()} ${date}`.trim();
-      })
+      .map(
+        (item) =>
+          `${item.completed ? "[x]" : "[ ]"} ${item.title} ${
+            item.dueDate == today ? "" : item.dueDate
+          }`
+      )
       .join("\n");
   };
-
   return {
-    // eslint-disable-next-line no-undef
     all,
     add,
     markAsComplete,
@@ -58,5 +39,5 @@ const todoList = () => {
     toDisplayableList,
   };
 };
-
+const today = new Date().toISOString().split("T")[0];
 module.exports = todoList;

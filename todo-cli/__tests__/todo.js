@@ -1,41 +1,54 @@
-/* eslint-disable no-undef */
+/* eslint-disable linebreak-style */
+/* eslint-disable max-len */
+/* eslint-disable linebreak-style */
 const todoList = require("../todo");
+const { all, markAsComplete, add, overdue, dueToday, dueLater } = todoList();
 
-const { all, markAsComplete, add } = todoList();
-
-describe("TodoList Test Suite", () => {
+describe("todo test suite", () => {
   beforeAll(() => {
-    add({
-      title: "Test todo",
-      completed: false,
-      dueDate: new Date().toLocaleDateString("en-CA"),
-    });
+    [
+      {
+        title: "Preparations for upcoming mid-sems",
+        completed: false,
+        dueDate: new Date(new Date().setDate(new Date().getDate() - 1))
+          .toISOString()
+          .split("T")[0],
+      },
+      {
+        title: "Go to GameZone",
+        completed: false,
+        dueDate: new Date().toISOString().split("T")[0],
+      },
+      {
+        title: "Go for routine body checkup",
+        completed: false,
+        dueDate: new Date(new Date().setDate(new Date().getDate() + 1))
+          .toISOString()
+          .split("T")[0],
+      },
+    ].forEach(add);
   });
-  test("Should add new todo", () => {
+  test("Add new todo", () => {
+    expect(all.length).toEqual(3);
     add({
-      title: "Test todo",
+      title: "Phone Recharge",
       completed: false,
-      dueDate: new Date().toLocaleDateString("en-CA"),
+      dueDate: new Date().toISOString().split("T")[0],
     });
+    expect(all.length).toEqual(4);
   });
-  test("Should mark a todo as complete", () => {
-    expect(all[0].completed).toBe(false);
+  test("Mark as complete", () => {
+    expect(all[0].completed).toEqual(false);
     markAsComplete(0);
-    expect(all[0].completed).toBe(true);
+    expect(all[0].completed).toEqual(true);
   });
-  test("Should retrieve overdue items", () => {
-    const { overdue } = todoList();
-    const overdueItems = overdue();
-    expect(overdueItems.length).toBe(0);
+  test("Retrieve Overdue todoItems", () => {
+    expect(overdue().length).toEqual(1);
   });
-  test("Should retrieve items that are due today", () => {
-    const { dueToday } = todoList();
-    const todayItems = dueToday();
-    expect(todayItems.length).toBe(0);
+  test("Retrieve Today todoItems", () => {
+    expect(dueToday().length).toEqual(2);
   });
-  test("Should retrieve items that are due later", () => {
-    const { dueLater } = todoList();
-    const laterItems = dueLater();
-    expect(laterItems.length).toBe(0);
+  test("Retrieve Due later todoItems", () => {
+    expect(dueLater().length).toEqual(1);
   });
 });
